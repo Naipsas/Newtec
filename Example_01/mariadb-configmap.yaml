@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb
+  namespace: example-01
+data:
+  database-name: newtec_wordpress
