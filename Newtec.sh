@@ -5,18 +5,15 @@
 # FUNCTIONS
 function menu {
 
-  clear
-
   echo "#####################"
   echo "####             ####"
   echo "# 1.- Install k8s   #"
   echo "# 2.- Run minikube  #"
   echo "# 3.- Launch ex01   #"
   echo "# 4.- Remove ex01   #"
-  echo "# 5.- Launch ex02   #"
-  echo "# 6.- Remove ex02   #"
-  echo "# 7.- Stop minikube #"
-  echo "# 8.- Exit          #"
+  echo "# 5.- ShowData ex01 #"
+  echo "# 6.- Stop minikube #"
+  echo "# 7.- Exit          #"
   echo "####             ####"
   echo "#####################"
 
@@ -38,15 +35,12 @@ function menu {
       RemoveEx "01"
       ;;
     5 )
-      LaunchEx "02"
+      ShowData "01"
       ;;
     6 )
-      RemoveEx "02"
-      ;;
-    7 )
       StopMinikube
       ;;
-    8 )
+    7 )
       clear
       exit
       ;;
@@ -69,7 +63,6 @@ function backtoMenu()
   if [ "$Option" = "Y" ] || [ "$Option" = "y" ]; then
     menu
   else
-    clear
     exit
   fi
 
@@ -171,8 +164,11 @@ function LaunchEx()
   file="$prefix$1$suffix"
   file+=".sh"
 
-  path="$ex01path"
-  source "$path$file"
+  path="Example_"
+  path+=$1
+  cd $path > /dev/null
+  source "$file"
+  cd .. > /dev/null
 
   backtoMenu
 
@@ -189,8 +185,32 @@ function RemoveEx()
   file="$prefix$1$suffix"
   file+=".sh"
 
-  path="$ex01path"
-  source "$path$file"
+  path="Example_"
+  path+=$1
+  cd $path > /dev/null
+  source "$file"
+  cd .. > /dev/null
+
+  backtoMenu
+
+}
+
+function ShowData()
+{
+
+  clear
+  echo "Key data:"
+
+  echo -en "\tCluster external IP: "
+  kubeip=$(minikube ip)
+  echo $kubeip
+
+  echo -e "\tService that exposes the blog: "
+  kubectl get svc -n "example-$1" | grep "NodePort"
+
+  echo -e "\tIf we access to the blog: \n\t"
+  wget -qO web 192.168.99.100:30000; head web | grep "Newtec"
+  rm web > /dev/null
 
   backtoMenu
 

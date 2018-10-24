@@ -17,6 +17,3 @@ KubectlTarget=/usr/local/bin
 VBRepoURL="http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo"
 MinikubeURL="https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
 KubectlURL="https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubectl"
-
-ex01path=./Example_01/
-ex02path=./Example_02/
